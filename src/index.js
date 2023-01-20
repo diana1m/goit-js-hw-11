@@ -45,9 +45,9 @@ async function getImages(input){
 function createMarkup(arr){
     const markup = arr.map(({webformatURL, largeImageURL, tags, likes, views, comments, downloads})=>
     `
-        <a class="gallery-item" href="${largeImageURL}">
+        <a class="gallery-item link" href="${largeImageURL}">
             <div class="photo-card">
-                <img src="${webformatURL}" alt="${tags}" loading="lazy" width="160"/>
+                <img src="${webformatURL}" alt="${tags}" loading="lazy" width="160px"  height = "106px" style = "object-fit: cover"/>
                 <div class="info">
                     <p class="info-item">
                         <b>${likes} Likes</b>

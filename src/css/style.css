@@ -1,0 +1,20 @@
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+  
+    gap: 30px;
+    margin: 0 auto;
+    padding: 30px;
+    max-width: 1400px;
+}
+
+.gallery-card {
+    background-color: rgb(161, 161, 70);
+    padding: 2px;
+}
+
+.link {
+    text-decoration: none;
+    color: currentColor;
+}
+
