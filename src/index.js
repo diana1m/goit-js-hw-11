@@ -9,7 +9,7 @@ const lightbox = new SimpleLightbox('.gallery a');
 const guard = document.querySelector(".js-guard");
 
 let page = 1;
-let per_page = 50;
+let per_page = 40;
 let inputValue ="";
 
 const options = {
@@ -23,16 +23,16 @@ form.addEventListener("submit", onSubmit);
 
 function onLoad(entries, observer) {
     entries.forEach(entry => {
-        // console.log(entry);
         if (entry.isIntersecting) {
             page += 1
             getImages(inputValue)
                 .then(data => {
                     createMarkup(data.hits);
-                    console.log(data);
-                    console.log (page);
+                    // console.log(data);
+                    // console.log (page);
                     if (page * per_page >= data.totalHits) {
-                        observer.unobserve(guard)
+                        observer.unobserve(guard);
+                        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
                     }
                 })
                 .catch(err => console.log(err))
@@ -43,8 +43,15 @@ function onLoad(entries, observer) {
 function onSubmit(evn){
     evn.preventDefault();
     inputValue = evn.target[0].value;
+
     gallery.innerHTML = "";
     page = 1;
+
+    if(inputValue === ""){
+        Notiflix.Notify.warning("Please enter a word");
+        return;
+    }
+    
     
     getImages(inputValue)
     .then(data => {
@@ -52,6 +59,8 @@ function onSubmit(evn){
             throw new Error("Sorry, there are no images matching your search query. Please try again.");
         }
         console.log(data);
+
+        Notiflix.Notify.success(`Hooray! We found ${data.totalHits} images.`)
         
         createMarkup(data.hits);
 
