@@ -5,20 +5,42 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
-// const list = document.createElement("ul");
-
-// list.classList.add("list-images");
-// gallery.append(list);
-
 const lightbox = new SimpleLightbox('.gallery a');
+const guard = document.querySelector(".js-guard");
+
+let page = 1;
+let per_page = 50;
+let inputValue ="";
+
+// const options = {
+//     root: null,
+//     rootMargin: '300px',
+//     threshold: 0
+// }
+// let observer = new IntersectionObserver(onLoad, options);
 
 form.addEventListener("submit", onSubmit);
 
+// function onLoad(entries, observer) {
+//     entries.forEach(entry => {
+//         console.log(entry);
+//         if (entry.isIntersecting) {
+//             page += 1
+//             onSubmit(inputValue)
+//                 .then(data => {
+//                     createMarkup(data.hits)
+//                     if (page * per_page >= data.totalHits) {
+//                         observer.unobserve(guard)
+//                     }
+//                 })
+//                 .catch(err => console.log(err))
+//         }
+//     })
+// }
+
 function onSubmit(evn){
     evn.preventDefault();
-    const inputValue = evn.target[0].value;
-
-    // list.innerHTML = "";
+   inputValue = evn.target[0].value;
 
     gallery.innerHTML = "";
 
@@ -30,15 +52,16 @@ function onSubmit(evn){
         console.log(data)
         
         createMarkup(data.hits);
+        // observer.observe(guard);
         lightbox.refresh();
     })
     .catch(err => Notiflix.Notify.failure(err.message));
 }
 
-async function getImages(input){
+async function getImages(inputValue){
     const BASE_URL = "https://pixabay.com/api/";
     const KEY = "32976687-1605871f29f724bfaa9acfcd4";
-    const response = await axios.get(`${BASE_URL}?key=${KEY}&q=${input}&image_type=photo&orientation=horizontal&safesearch=true`);
+    const response = await axios.get(`${BASE_URL}?key=${KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${per_page}`);
     return response.data;
 }
 
@@ -69,3 +92,4 @@ function createMarkup(arr){
     gallery.insertAdjacentHTML('beforeend', markup);
 
 }
+
