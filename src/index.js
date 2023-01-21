@@ -8,13 +8,17 @@ const gallery = document.querySelector(".gallery");
 const lightbox = new SimpleLightbox('.gallery a');
 const guard = document.querySelector(".js-guard");
 
+// gallery.insertAdjacentHTML("beforebegin", `<svg width="16px" height="16px">
+// <use href="./images/symbol-defs.svg#icon-favorite"></use>
+// </svg>`)
+
 let page = 1;
 let per_page = 40;
 let inputValue ="";
 
 const options = {
     root: null,
-    rootMargin: '300px',
+    rootMargin: '400px',
     threshold: 0
 }
 let observer = new IntersectionObserver(onLoad, options);
@@ -47,7 +51,7 @@ function onSubmit(evn){
     gallery.innerHTML = "";
     page = 1;
 
-    if(inputValue === ""){
+    if(inputValue.trim() === ""){
         Notiflix.Notify.warning("Please enter a word");
         return;
     }
@@ -84,19 +88,24 @@ function createMarkup(arr){
     `
         <a class="gallery-item link" href="${largeImageURL}">
             <div class="photo-card">
-                <img src="${webformatURL}" alt="${tags}" loading="lazy" width="160px"  height = "106px" style = "object-fit: cover"/>
+                <img class="image" src="${webformatURL}" alt="${tags}" loading="lazy" width="160px"  height = "106px" />
                 <div class="info">
                     <p class="info-item">
-                        <b>${likes} Likes</b>
+                        <b>${likes} 
+                        </b>
+                        <span class="material-symbols-outlined">favorite</span>
                     </p>
                     <p class="info-item">
-                        <b>${views} Views</b>
+                        <b>${views}</b>
+                        <span class="material-symbols-outlined">visibility</span>
                     </p>
                     <p class="info-item">
-                        <b>${comments} Comments</b>
+                        <b>${comments} </b>
+                        <span class="material-symbols-outlined">comment</span>
                     </p>
                     <p class="info-item">
-                        <b>${downloads} Downloads</b>
+                        <b>${downloads} </b>
+                        <span class="material-symbols-outlined">download</span>
                     </p>
                 </div>
             </div>
