@@ -25,24 +25,7 @@ let observer = new IntersectionObserver(onLoad, options);
 
 form.addEventListener("submit", onSubmit);
 
-function onLoad(entries, observer) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            page += 1
-            getImages(inputValue)
-                .then(data => {
-                    createMarkup(data.hits);
-                    // console.log(data);
-                    // console.log (page);
-                    if (page * per_page >= data.totalHits) {
-                        observer.unobserve(guard);
-                        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-                    }
-                })
-                .catch(err => console.log(err))
-        }
-    })
-}
+
 
 function onSubmit(evn){
     evn.preventDefault();
@@ -82,6 +65,24 @@ async function getImages(inputValue){
     return response.data;
 }
 
+function onLoad(entries, observer) {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            page += 1
+            getImages(inputValue)
+                .then(data => {
+                    createMarkup(data.hits);
+                    // console.log(data);
+                    // console.log (page);
+                    if (page * per_page >= data.totalHits) {
+                        observer.unobserve(guard);
+                        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+                    }
+                })
+                .catch(err => console.log(err))
+        }
+    })
+}
 
 function createMarkup(arr){
     const markup = arr.map(({webformatURL, largeImageURL, tags, likes, views, comments, downloads})=>
