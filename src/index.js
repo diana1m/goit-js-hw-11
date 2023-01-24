@@ -1,7 +1,8 @@
-import axios from "axios";
+
 import Notiflix from "notiflix";
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
+import { getImages } from "./js/getImages";
 
 const form = document.querySelector(".search-form");
 const gallery = document.querySelector(".gallery");
@@ -11,6 +12,8 @@ const guard = document.querySelector(".js-guard");
 // gallery.insertAdjacentHTML("beforebegin", `<svg width="16px" height="16px">
 // <use href="./images/symbol-defs.svg#icon-favorite"></use>
 // </svg>`)
+
+// form.insertAdjacentHTML("afterbegin", `<img src="./images/PNG/comment.png" alt="comment">`)
 
 let page = 1;
 let per_page = 40;
@@ -40,7 +43,7 @@ function onSubmit(evn){
     }
     
     
-    getImages(inputValue)
+    getImages(inputValue, page, per_page)
     .then(data => {
         if(data.total === 0){
             throw new Error("Sorry, there are no images matching your search query. Please try again.");
@@ -58,18 +61,11 @@ function onSubmit(evn){
 }
 
 
-async function getImages(inputValue){
-    const BASE_URL = "https://pixabay.com/api/";
-    const KEY = "32976687-1605871f29f724bfaa9acfcd4";
-    const response = await axios.get(`${BASE_URL}?key=${KEY}&q=${inputValue}&image_type=photo&orientation=horizontal&safesearch=true&page=${page}&per_page=${per_page}`);
-    return response.data;
-}
-
 function onLoad(entries, observer) {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             page += 1
-            getImages(inputValue)
+            getImages(inputValue, page, per_page)
                 .then(data => {
                     createMarkup(data.hits);
                     // console.log(data);
